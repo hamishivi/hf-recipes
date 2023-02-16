@@ -1,0 +1,6 @@
+trained_models/
+venv/
+*.log
+*.jsonl
+*.json
+__pycache__/
