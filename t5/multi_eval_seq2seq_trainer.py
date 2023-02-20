@@ -67,8 +67,7 @@ class MultiEvalSeq2SeqTrainer(Seq2SeqTrainer):
         eval_datasets: Optional[List[Dataset]] = None,
         ignore_keys: Optional[List[str]] = None,
         metric_key_prefix: str = "eval",
-        max_length: Optional[int] = None,
-        num_beams: Optional[int] = None,
+        **gen_kwargs
     ) -> Dict[str, float]:
         """
         Run evaluation and returns metrics.
@@ -104,8 +103,13 @@ class MultiEvalSeq2SeqTrainer(Seq2SeqTrainer):
             computed from the predictions. The dictionary also contains the epoch
             number which comes from the training state.
         """
-        self._max_length = max_length if max_length is not None else self.args.generation_max_length
-        self._num_beams = num_beams if num_beams is not None else self.args.generation_num_beams
+        gen_kwargs = gen_kwargs.copy()
+        if gen_kwargs.get("max_length") is None and gen_kwargs.get("max_new_tokens") is None:
+            gen_kwargs["max_length"] = self.args.generation_max_length
+        gen_kwargs["num_beams"] = (
+            gen_kwargs["num_beams"] if gen_kwargs.get("num_beams") is not None else self.args.generation_num_beams
+        )
+        self._gen_kwargs = gen_kwargs
         self._memory_tracker.start()
 
         assert (

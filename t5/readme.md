@@ -8,3 +8,5 @@ python train.py --train_tasks rte --eval_tasks rte --output_dir test --model t5-
 Behind the scenes this is just a slight modification of the `Seq2SeqTrainer` and will accept all the [training arguments the huggingface trainers do](https://huggingface.co/docs/transformers/main_classes/trainer).
 
 Distributed evaluation isn't guaranteed to work, but training should work fine.
+
+There are some rough edges and bugs, I may or may not work these out.

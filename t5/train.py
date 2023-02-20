@@ -110,7 +110,8 @@ def preprocess_function(example):
 train_datasets = [ds.map(preprocess_function, remove_columns=ds.column_names) for ds in train_datasets]
 eval_datasets = [ds.map(preprocess_function, remove_columns=ds.column_names) for ds in eval_datasets]
 
-metric = evaluate.load("accuracy")
+# this is accuracy for strings
+metric = evaluate.load("exact_match")
 
 
 def compute_metrics(eval_preds):
